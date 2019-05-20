@@ -100,18 +100,37 @@
             android:background="#28a9c6"/>
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/login_login_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginTop="64dp"
         android:paddingBottom="8dp"
         android:paddingTop="8dp"
-        android:text="登录"
-        android:background="@drawable/btn_blue_selector"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"/>
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/login_login_btn"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="登录"
+            android:background="@drawable/btn_blue_selector"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"/>
+
+        <Button
+            android:id="@+id/login_sign_up_btn"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="注册"
+            android:background="@drawable/btn_default_selector"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"/>
+
+    </LinearLayout>
+
 
 </LinearLayout>

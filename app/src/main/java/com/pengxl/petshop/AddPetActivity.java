@@ -3,6 +3,7 @@ package com.pengxl.petshop;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,7 +12,12 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.pengxl.petshop.util.Pet;
+import com.pengxl.petshop.util.PetShop;
 
+import java.io.BufferedWriter;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
 import java.util.regex.Pattern;
 
 import static com.pengxl.petshop.util.PetShop.pets;
@@ -60,10 +66,10 @@ public class AddPetActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Pet pet;
                 if(!checkInputs()) {
                     return;
                 }
-                Pet pet;
                 switch (type.getSelectedItemPosition()) {
                     case 0:
                         pet = new Pet("DOG");
@@ -100,6 +106,12 @@ public class AddPetActivity extends AppCompatActivity {
                     default:
                         break;
                 }
+                addToServer();
+                type.setSelection(0);
+                name.setText("");
+                age.setText("");
+                gender.setSelection(0);
+                color.setText("");
                 Toast.makeText(AddPetActivity.this, "添加成功！", Toast.LENGTH_SHORT).show();
             }
         });
@@ -124,5 +136,47 @@ public class AddPetActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    private void addToServer() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Socket socket = null;
+                OutputStream outputStream = null;
+                BufferedWriter bufferedWriter = null;
+                try {
+                    socket = new Socket("39.106.219.88", 8088);
+                    outputStream = socket.getOutputStream();
+                    bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
+                    if(pets.size() == 0) {
+                        bufferedWriter.write("2 " + PetShop.account + "\n");
+                        bufferedWriter.flush();
+                    }
+                    for(Pet pet : pets) {
+                        String s = pet.getType() + " " + pet.getName() + " " + pet.getAge() + " " + pet.getGender()
+                                + " " + pet.getColor();
+                        bufferedWriter.write("2 " + PetShop.account + " " + s + "\n");
+                        bufferedWriter.flush();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if(outputStream != null ) {
+                            outputStream.close();
+                        }
+                        if(bufferedWriter != null) {
+                            bufferedWriter.close();
+                        }
+                        if(socket != null) {
+                            socket.close();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 }

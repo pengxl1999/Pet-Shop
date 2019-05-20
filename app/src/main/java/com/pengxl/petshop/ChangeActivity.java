@@ -14,8 +14,15 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.pengxl.petshop.util.Pet;
+import com.pengxl.petshop.util.PetShop;
 
+import java.io.BufferedWriter;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
 import java.util.regex.Pattern;
+
+import static com.pengxl.petshop.util.PetShop.pets;
 
 public class ChangeActivity extends AppCompatActivity {
 
@@ -155,6 +162,49 @@ public class ChangeActivity extends AppCompatActivity {
         pet.setAge(Integer.parseInt(age.getText().toString()));
         pet.setGender((String)gender.getSelectedItem());
         pet.setColor(color.getText().toString());
+        addToServer();
         Toast.makeText(ChangeActivity.this, "修改成功！",Toast.LENGTH_SHORT).show();
+    }
+
+    private void addToServer() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Socket socket = null;
+                OutputStream outputStream = null;
+                BufferedWriter bufferedWriter = null;
+                try {
+                    socket = new Socket("39.106.219.88", 8088);
+                    outputStream = socket.getOutputStream();
+                    bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
+                    if(pets.size() == 0) {
+                        bufferedWriter.write("2 " + PetShop.account + "\n");
+                        bufferedWriter.flush();
+                    }
+                    for(Pet pet : pets) {
+                        String s = pet.getType() + " " + pet.getName() + " " + pet.getAge() + " " + pet.getGender()
+                                + " " + pet.getColor();
+                        bufferedWriter.write("2 " + PetShop.account + " " + s + "\n");
+                        bufferedWriter.flush();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if(outputStream != null ) {
+                            outputStream.close();
+                        }
+                        if(bufferedWriter != null) {
+                            bufferedWriter.close();
+                        }
+                        if(socket != null) {
+                            socket.close();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 }

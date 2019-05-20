@@ -15,10 +15,15 @@ import android.widget.TextView;
 
 import com.pengxl.petshop.util.Pet;
 import com.pengxl.petshop.util.PetListAdapter;
+import com.pengxl.petshop.util.PetShop;
 import com.pengxl.petshop.util.RequestCode;
 
 import org.json.JSONObject;
 
+import java.io.BufferedWriter;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
 import java.util.LinkedList;
 
 import static com.pengxl.petshop.util.PetShop.pets;
@@ -74,6 +79,7 @@ public class ShowResultActivity extends AppCompatActivity {
                                         pets.remove(pet);
                                         PetListAdapter adapter = new PetListAdapter(ShowResultActivity.this, R.layout.list_view_item, searchResult);
                                         searchList.setAdapter(adapter);
+                                        addToServer();
                                     }
                                 }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
                                     @Override
@@ -128,5 +134,47 @@ public class ShowResultActivity extends AppCompatActivity {
                 searchResult.add(pet);
             }
         }
+    }
+
+    private void addToServer() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Socket socket = null;
+                OutputStream outputStream = null;
+                BufferedWriter bufferedWriter = null;
+                try {
+                    socket = new Socket("39.106.219.88", 8088);
+                    outputStream = socket.getOutputStream();
+                    bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
+                    if(pets.size() == 0) {
+                        bufferedWriter.write("2 " + PetShop.account + "\n");
+                        bufferedWriter.flush();
+                    }
+                    for(Pet pet : pets) {
+                        String s = pet.getType() + " " + pet.getName() + " " + pet.getAge() + " " + pet.getGender()
+                                + " " + pet.getColor();
+                        bufferedWriter.write("2 " + PetShop.account + " " + s + "\n");
+                        bufferedWriter.flush();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if(outputStream != null ) {
+                            outputStream.close();
+                        }
+                        if(bufferedWriter != null) {
+                            bufferedWriter.close();
+                        }
+                        if(socket != null) {
+                            socket.close();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 }

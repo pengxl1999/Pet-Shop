@@ -11,20 +11,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.pengxl.petshop.util.Pet;
+import com.pengxl.petshop.util.PetShop;
+
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
 public class LoginActivity extends AppCompatActivity {
+
     private Socket socket;
     private OutputStream outputStream;
     private PrintWriter printWriter;
     private InputStreamReader inputStreamReader;
     private BufferedReader bufferedReader;
     private EditText account, password;
-    private Button login;
+    private Button login, signUp;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,11 +42,20 @@ public class LoginActivity extends AppCompatActivity {
         account = (EditText) findViewById(R.id.login_account);
         password = (EditText) findViewById(R.id.login_password);
         login = (Button) findViewById(R.id.login_login_btn);
+        signUp = (Button) findViewById(R.id.login_sign_up_btn);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                PetShop.account = account.getText().toString();
                 check(account.getText().toString(), password.getText().toString());
+            }
+        });
+        signUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(intent);
             }
         });
     }
