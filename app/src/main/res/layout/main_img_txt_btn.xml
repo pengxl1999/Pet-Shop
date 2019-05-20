@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/main_img_txt_btn_image"
+        android:scaleType="fitXY"
+        android:layout_width="65dp"
+        android:layout_height="60dp" />
+
+    <TextView
+        android:gravity="center"
+        android:id="@+id/main_img_txt_btn_text"
+        android:layout_width="60dp"
+        android:layout_height="40dp" />
+
+</LinearLayout>

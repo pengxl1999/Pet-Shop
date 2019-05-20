@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/title"
+        android:text="宠物商店"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="#28a9c6"
+        android:gravity="center"
+        android:textColor="#fff"
+        android:textSize="17sp" />
+
+    <TextView
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:text="宠物列表："
+        android:textSize="17sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ListView
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:id="@+id/pet_list"
+        android:layout_width="wrap_content"
+        android:layout_height="500dp">
+    </ListView>
+
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.pengxl.petshop.util.ImageTextButton
+            android:id="@+id/add_pet"
+            android:background="@drawable/btn_normal_selector"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.pengxl.petshop.util.ImageTextButton
+            android:id="@+id/search_pet"
+            android:background="@drawable/btn_normal_selector"
+            android:layout_marginStart="20dp"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.pengxl.petshop.util.ImageTextButton
+            android:id="@+id/delete_pet"
+            android:background="@drawable/btn_normal_selector"
+            android:layout_marginStart="20dp"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.pengxl.petshop.util.ImageTextButton
+            android:id="@+id/change_pet"
+            android:background="@drawable/btn_normal_selector"
+            android:layout_marginStart="20dp"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
